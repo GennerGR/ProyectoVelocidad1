@@ -35,6 +35,7 @@ class AccesoDeportes : Screen {
 
             //Texto de bienvenida
 
+            Spacer(modifier = Modifier.height(16.dp))
             Text(
                 "BIENVENIDO A DEPORTES",
                 color = Color.Black,

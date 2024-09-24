@@ -6,9 +6,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -31,7 +31,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.gnr.proyectovelocidad1.network.NetworkUtils.httpClient
 import com.gnr.proyectovelocidad1.network.model.League
 import com.gnr.proyectovelocidad1.network.model.LeagueResponse
-import com.gnr.proyectovelocidad1.viewDetailsLeague.viewDetailsLeague
+import com.gnr.proyectovelocidad1.viewDetailsLeague.ViewDetailsLeague
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.header
@@ -52,10 +52,8 @@ class SportLeagueScreen(private val v: Int, private val deporte: String) : Scree
 
         LaunchedEffect(deporte) {
             getLeagues ( deporte, v) { leagues ->
-
                 leagueList = leagues
                 loading = false
-
             }
         }
 
@@ -79,9 +77,9 @@ class SportLeagueScreen(private val v: Int, private val deporte: String) : Scree
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(leagueList) { League: League ->
-                        Box(modifier = Modifier.padding(8.dp).fillMaxSize().height(150.dp)) {
+                        Box(modifier = Modifier.padding(8.dp).fillMaxWidth().height(150.dp)) {
                             Button(onClick = {
-                                navigator.push(viewDetailsLeague())
+                                navigator.push(ViewDetailsLeague())
                             }) {
                                 Box(modifier = Modifier.fillMaxSize()) {
                                     Text(League.name ?: "Unknown", color = Color.White)
@@ -104,7 +102,7 @@ class SportLeagueScreen(private val v: Int, private val deporte: String) : Scree
 
 private fun getLeagues(deporte: String, v:Int, onSeccessResponse: (List<League>) -> Unit) {
     if(deporte.isBlank()) return
-    val url = "http:$v.$deporte.api-sports.io/league"
+    val url = "https://v$v.$deporte.api-sports.io/leagues"
 
     CoroutineScope((Dispatchers.IO)).launch {
         try {
